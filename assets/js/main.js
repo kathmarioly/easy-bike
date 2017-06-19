@@ -1,10 +1,43 @@
 /*La función initMap inicializara el mapa*/
 
+
 function initMap(){
-	var map = new google.maps.Map(document.getElementById("map");
+	var map = new google.maps.Map(document.getElementById("map"),{
 		zoom: 5,
-		center: {lat: -9.1191427. lng: -77.0349046},
-		mapTypeControl:false,
-		streetViewControl: false}
-		)};
-	
+		center: {lat: -9.1191427, lng: -77.0349046},
+		mapTypeControl: false,
+		zoomControl: false,
+		streetViewControl: false
+	});
+
+
+function buscar(){
+	if (navigator.geolocation) {
+		navigator.geolocation.getCurrentPosition(funcionExito, funcionError);
+	}
+}
+
+document.getElementById("encuentrame").addEventListener("click", buscar);
+var latitud,longitud;
+
+/*Con esto dentro de initMap() se agregara var:funcionExito, con lo que obtendremos nuestra
+latitu o longitus y ademas crearemos un marcador de nuestra ubicación*/
+
+var funcionExito = function(posicion){
+	latitud = posicion.coords.latitude;
+	longitud = posicion.coords.longitude;
+
+	var miUbicacion = new google.maps.Marker({
+		position: {lat:latitud, lng:longitud},
+		animation: google.maps.Animation.DROP, map: map
+	});
+
+	map.setZoom(17);
+	map.setCenter({lat:latitud, lng:longitud});
+}
+
+var funcionError = function(error){
+	alert("Tenemos un problema con encontrar tu ubicación");
+
+}
+}
